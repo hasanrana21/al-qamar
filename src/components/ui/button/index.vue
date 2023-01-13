@@ -1,6 +1,6 @@
 <template lang="">
   <div>
-    <button class="button__wrapper" :class="buttonWrapper" type="button">
+    <button class="button__wrapper" :class="buttonWrapper" :type="type">
       {{ label }}
     </button>
   </div>
@@ -13,6 +13,11 @@ export default {
       type: String,
       required: true,
       default: "",
+    },
+    type: {
+      type: String,
+      required: false,
+      default: "button",
     },
     buttonWrapper: {
       type: String,

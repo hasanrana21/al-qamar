@@ -25,7 +25,7 @@
         </div>
       </ui-table>
     </div>
-    <create-form v-else></create-form>
+    <create-form v-else @created="state.openForm = false"></create-form>
   </div>
 </template>
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <form @submit.prevent="saveInvoice">
     <h3 class="text-3xl font-medium">New Invoice</h3>
     <h5 class="text-xl font-medium mt-8 mb-4">Bill From</h5>
     <div class="grid grid-flow-row grid-cols-3 gap-6">
@@ -78,20 +78,24 @@
       ></ui-input>
     </div>
     <h5 class="text-2xl font-medium mt-8 mb-4">Product Lists</h5>
-    <div v-if="state.productLists.length">
+    <div v-if="state.formData.productLists.length">
       <div class="grid grid-flow-row grid-cols-3 gap-6 mb-3">
         <h6 class="text-lg">Item name</h6>
         <h5 class="text-lg">Price</h5>
       </div>
       <div
-        v-for="(item, key) in state.productLists"
+        v-for="(item, key) in state.formData.productLists"
         :key="key"
         class="grid grid-flow-row grid-cols-3 gap-6 mb-2"
       >
         <h6 class="text-lg">{{ item.name }}</h6>
         <h5 class="text-lg">
           $ {{ item.price }}
-          <span>X</span>
+          <span
+            class="bg-red-500 px-2 ml-4 cursor-pointer rounded text-xl"
+            @click="removeItem(key)"
+            >X</span
+          >
         </h5>
       </div>
     </div>
@@ -118,17 +122,26 @@
         ></ui-button>
       </div>
     </div>
-  </div>
+    <div class="flex space-x-4 mt-10 justify-end">
+      <ui-button label="Cancel" buttonWrapper=" !py-2"></ui-button>
+      <ui-button
+        label="Save"
+        type="submit"
+        buttonWrapper="!bg-yellow-500 !py-2"
+      ></ui-button>
+    </div>
+  </form>
 </template>
 <script>
-import { reactive } from "vue";
+import { onBeforeMount, reactive } from "vue";
 import UiInput from "@/components/ui/input/index.vue";
 import UiButton from "@/components/ui/button/index.vue";
 export default {
   name: "create-form",
   components: { UiInput, UiButton },
-  setup() {
+  setup(props, { emit }) {
     const state = reactive({
+      invoiceLists: [],
       formData: {
         billFrom: {
           invoiceName: "",
@@ -144,22 +157,43 @@ export default {
           city: "",
           country: "",
         },
+        productLists: [],
       },
       productData: {
         name: "",
         price: "",
       },
-      productLists: [],
     });
     const addProduct = () => {
-      state.productLists.push({
+      state.formData.productLists.push({
         name: state.productData.name,
         price: state.productData.price,
       });
+      state.productData.name = "";
+      state.productData.price = "";
     };
+    const removeItem = (index) => {
+      state.formData.productLists.splice(index, 1);
+    };
+    const saveInvoice = () => {
+      console.log("formdata", state.formData);
+      state.invoiceLists.push(state.formData);
+      const data = JSON.stringify(state.invoiceLists);
+
+      localStorage.setItem("invoiceLists", data);
+      emit("created");
+    };
+
+    onBeforeMount(() => {
+      const data = JSON.parse(localStorage.getItem("invoiceLists"));
+      if (!data) return;
+      state.invoiceLists = data;
+    });
     return {
       state,
       addProduct,
+      saveInvoice,
+      removeItem,
     };
   },
 };
