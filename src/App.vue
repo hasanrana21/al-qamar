@@ -17,6 +17,6 @@ export default {
 
 <style scoped>
 .page__wrapper {
-  @apply bg-[#141624] h-screen text-white;
+  @apply bg-[#141624] min-h-screen text-white;
 }
 </style>
