@@ -95,7 +95,7 @@
         <h5 class="text-lg">
           $ {{ item.price }}
           <span
-            class="bg-red-500 px-2 ml-4 cursor-pointer rounded text-xl"
+            class="bg-red-500 px-2 ml-4 cursor-pointer rounded-full py-1 text-lg"
             @click="removeItem(key)"
             >X</span
           >
@@ -128,7 +128,11 @@
     </div>
     <!-- FORM SUBMIT BUTTON -->
     <div class="flex space-x-4 mt-10 justify-end">
-      <ui-button label="Cancel" buttonWrapper=" !py-2"></ui-button>
+      <ui-button
+        label="Cancel"
+        buttonWrapper=" !py-2"
+        @click="$emit('cancel')"
+      ></ui-button>
       <ui-button
         label="Save"
         type="submit"
@@ -170,10 +174,12 @@ export default {
       },
     });
     const addProduct = () => {
+      // if (!state.productData.name && !state.productData.price) return;
       state.formData.productLists.push({
         name: state.productData.name,
         price: state.productData.price,
       });
+      JSON.parse(JSON.stringify(state.productData));
       state.productData.name = "";
       state.productData.price = "";
     };

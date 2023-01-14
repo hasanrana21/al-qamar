@@ -40,8 +40,15 @@
       </ui-table>
     </div>
     <!-- CREATE FORM -->
-    <create-form v-if="state.openForm" @created="handleCreated"></create-form>
-    <view-invoice v-if="state.openViewPage"></view-invoice>
+    <create-form
+      v-if="state.openForm"
+      @created="handleCreated"
+      @cancel="state.openForm = false"
+    ></create-form>
+    <view-invoice
+      v-if="state.openViewPage"
+      @back="state.openViewPage = false"
+    ></view-invoice>
   </div>
 </template>
 <script>
