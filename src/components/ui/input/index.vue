@@ -7,6 +7,7 @@
       :name="name"
       :id="id"
       :placeholder="placeholder"
+      :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)"
     />
   </div>

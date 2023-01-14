@@ -95,7 +95,7 @@
         <h5 class="text-lg">
           $ {{ item.price }}
           <span
-            class="bg-red-500 px-2 ml-4 cursor-pointer rounded-full py-1 text-lg"
+            class="bg-red-500 px-2 ml-4 cursor-pointer rounded-full py-1 text-sm"
             @click="removeItem(key)"
             >X</span
           >
@@ -174,12 +174,11 @@ export default {
       },
     });
     const addProduct = () => {
-      // if (!state.productData.name && !state.productData.price) return;
+      if (!state.productData.name && !state.productData.price) return;
       state.formData.productLists.push({
         name: state.productData.name,
         price: state.productData.price,
       });
-      JSON.parse(JSON.stringify(state.productData));
       state.productData.name = "";
       state.productData.price = "";
     };
