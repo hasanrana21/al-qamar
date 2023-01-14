@@ -1,7 +1,7 @@
 <template lang="">
   <div class="wrapper">
     <!-- TABLE LISTS -->
-    <div v-if="!state.openForm">
+    <div v-if="!state.openForm && !state.openViewPage">
       <div class="header__wrapper">
         <div class="header">
           <h3 class="">Invoices</h3>
@@ -32,12 +32,7 @@
           <div class="col-span-2">
             <span
               class="mdi mdi-eye-outline text-white text-2xl cursor-pointer mr-3"
-            ></span>
-            <span
-              class="mdi mdi-eye-outline text-white text-2xl cursor-pointer mr-3"
-            ></span>
-            <span
-              class="mdi mdi-eye-outline text-white text-2xl cursor-pointer mr-3"
+              @click="viewDetails(item)"
             ></span>
           </div>
         </div>
@@ -45,7 +40,8 @@
       </ui-table>
     </div>
     <!-- CREATE FORM -->
-    <create-form v-else @created="handleCreated"></create-form>
+    <create-form v-if="state.openForm" @created="handleCreated"></create-form>
+    <view-invoice v-if="state.openViewPage"></view-invoice>
   </div>
 </template>
 <script>
@@ -53,13 +49,15 @@ import { onBeforeMount, reactive } from "vue";
 import UiButton from "@/components/ui/button";
 import UiTable from "@/components/ui/table/index.vue";
 import CreateForm from "@/components/local/home/CreateForm.vue";
+import ViewInvoice from "@/components/local/home/ViewInvoice.vue";
 export default {
   name: "home-page",
-  components: { UiButton, UiTable, CreateForm },
+  components: { UiButton, UiTable, CreateForm, ViewInvoice },
   setup() {
     const state = reactive({
       totalPrice: 0,
       openForm: false,
+      openViewPage: false,
       headers: [
         {
           label: "Name",
@@ -95,6 +93,11 @@ export default {
       fetchData();
       state.openForm = false;
     };
+    const viewDetails = (invoice) => {
+      let data = JSON.stringify(invoice);
+      localStorage.setItem("invoice", data);
+      state.openViewPage = true;
+    };
     onBeforeMount(() => {
       fetchData();
     });
@@ -102,6 +105,7 @@ export default {
       state,
       getTotalPrice,
       handleCreated,
+      viewDetails,
     };
   },
 };
