@@ -1,6 +1,7 @@
 <template>
   <form @submit.prevent="saveInvoice">
     <h3 class="text-3xl font-medium">New Invoice</h3>
+    <!-- BILL FROM FORM -->
     <h5 class="text-xl font-medium mt-8 mb-4">Bill From</h5>
     <div class="grid grid-flow-row grid-cols-3 gap-6">
       <ui-input
@@ -39,6 +40,7 @@
         v-model="state.formData.billFrom.country"
       ></ui-input>
     </div>
+    <!-- BILL TO FORM -->
     <h5 class="text-xl font-medium mt-8 mb-4">Bill To</h5>
     <div class="grid grid-flow-row grid-cols-3 gap-6">
       <ui-input
@@ -77,6 +79,7 @@
         v-model="state.formData.billTo.country"
       ></ui-input>
     </div>
+    <!-- PRODUCT LISTS -->
     <h5 class="text-2xl font-medium mt-8 mb-4">Product Lists</h5>
     <div v-if="state.formData.productLists.length">
       <div class="grid grid-flow-row grid-cols-3 gap-6 mb-3">
@@ -99,6 +102,7 @@
         </h5>
       </div>
     </div>
+    <!-- PRODUCT ADD -->
     <div class="grid grid-flow-row grid-cols-3 gap-6 mt-5">
       <ui-input
         id="product_name"
@@ -122,6 +126,7 @@
         ></ui-button>
       </div>
     </div>
+    <!-- FORM SUBMIT BUTTON -->
     <div class="flex space-x-4 mt-10 justify-end">
       <ui-button label="Cancel" buttonWrapper=" !py-2"></ui-button>
       <ui-button
@@ -176,7 +181,6 @@ export default {
       state.formData.productLists.splice(index, 1);
     };
     const saveInvoice = () => {
-      console.log("formdata", state.formData);
       state.invoiceLists.push(state.formData);
       const data = JSON.stringify(state.invoiceLists);
 
